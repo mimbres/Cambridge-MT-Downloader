@@ -8,6 +8,7 @@ from urllib.parse import urlsplit, urlparse, unquote
 from tqdm import tqdm, trange
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
+from pySmartDL import SmartDL  #pip install pySmartDL
 
 
 def cprint(text, color='red'):
@@ -180,36 +181,47 @@ def download_single_thread(url, dl_dir='./downloaded/'):
     return None  # move this line outside of the for loop
 
 
-# def download_single_thread(url, dl_dir='./downloaded/'):
-#     os.makedirs(dl_dir, exist_ok=True)
+def download_smartdl(url, max_workers=8, dl_dir='./downloaded/'):
+    os.makedirs(dl_dir, exist_ok=True)
 
-#     if '?download=1' in url[-11:]:
-#         pass
-#     else:
-#         url += '?download=1'
-#     file_name = os.path.join(dl_dir, get_filename_from_url(url))
+    if '?download=1' in url[-11:]:
+        utl = url.replace('?download=1', '')
 
-#     for i in range(3):
-#         try:
-#             # get the total file size
-#             response = requests.head(url)
-#             total_size = int(response.headers.get('content-length', 0))
+    file_name = os.path.join(dl_dir, get_filename_from_url(url))
 
-#             # download the file in a single chunk
-#             byte_ranges = [(0, total_size - 1)]
-#             if not os.path.exists(file_name):
-#                 with open(file_name, 'wb'):
-#                     pass
+    for i in range(3):
+        try:
+            # # get the total file size
+            # response = requests.head(url)
+            # total_size = int(response.headers.get('content-length', 0))
 
-#             download_chunk(0, total_size - 1, url, file_name)
+            # # calculate the optimal chunk size based on total size
+            # chunk_size = max(total_size // (max_workers * 2),
+            #                  1_048_576)  # minimum of 1MB chunk size
 
-#             break  # break out of the loop if the download succeeded
-#         except Exception as e:
-#             cprint(f"Failed to download {url}: {e}")
-#             if i < 2:
-#                 cprint(f"Retrying... (attempt {i + 1})")
-#                 time.sleep(1)
-#             else:
-#                 return url
+            # # determine the number of chunks based on the chunk size
+            # num_chunks = max(total_size // chunk_size, 1)
 
-#     return None  # move this line outside of the for loop
+            # # create a list of tuples representing the byte ranges for each chunk
+            # byte_ranges = [(i * chunk_size,
+            #                 min((i + 1) * chunk_size - 1, total_size - 1))
+            #                for i in range(num_chunks)]
+
+            # use pySmartDL to download the file
+            if not os.path.exists(file_name):
+                with open(file_name, 'wb'):
+                    pass
+
+            dl = SmartDL(url, file_name, threads=max_workers, progress_bar=True)
+            # dl.chunk_size = chunk_size
+            # dl.max_threads = max_workers
+            dl.start()
+            return None
+
+        except Exception as e:
+            cprint(f"Failed to download {url}: {e}")
+            if i < 2:
+                cprint(f"Retrying... (attempt {i + 1})")
+                time.sleep(1)
+            else:
+                return url

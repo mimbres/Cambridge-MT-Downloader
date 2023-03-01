@@ -5,7 +5,7 @@ import os
 import shutil
 import subprocess
 from page_source import page_source
-from download_util import download_multi_thread, download_single_thread, check_url, get_filename_from_url, cprint
+from download_util import download_multi_thread, download_smartdl, download_single_thread, check_url, get_filename_from_url, cprint
 
 
 def remove_macos_hidden_files(target_dir):
@@ -118,7 +118,8 @@ if __name__ == '__main__':
         if int(MAX_WORKERS) == 1:
             result = download_single_thread(url, dl_dir=DL_DIR)
         else:
-            result = download_multi_thread(
+            # result = download_multi_thread(
+            result = download_smartdl(
                 url, max_workers=int(MAX_WORKERS), dl_dir=DL_DIR)
 
         if result is None:  # download was succesful
