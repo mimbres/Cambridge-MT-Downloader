@@ -162,7 +162,8 @@ def download_single_thread(url, dl_dir='./downloaded/'):
                             unit='B',
                             unit_scale=True,
                             desc=file_name) as pbar:
-                        for chunk in r.iter_content(chunk_size=8192):
+                        #for chunk in r.iter_content(chunk_size=8192):
+                        for chunk in r.iter_content(chunk_size=1024 * 1024 * 4):
                             if chunk:
                                 f.write(chunk)
                                 pbar.update(len(chunk))
