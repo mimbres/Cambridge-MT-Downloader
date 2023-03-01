@@ -5,7 +5,7 @@ import os
 import shutil
 import subprocess
 from page_source import page_source
-from download_util import download_multi_thread, check_url, get_filename_from_url, cprint
+from download_util import download_multi_thread, download_single_thread, check_url, get_filename_from_url, cprint
 
 
 def remove_macos_hidden_files(target_dir):
@@ -86,8 +86,8 @@ if __name__ == '__main__':
         f"Enter the download directory (default is './downloaded/'): "
     ) or './downloaded/'
     MAX_WORKERS = input(
-        f"Enter the number of max workers for multi-download (default is 8): "
-    ) or 8
+        f"Enter the number of max workers for multi-download (default is 1): "
+    ) or 1
     TARGET_SAMPLE_RATE = input(
         f"Enter the target sample rate (default is 16000): ") or 16000
     START_FROM_URL_INDEX = input(
@@ -115,8 +115,13 @@ if __name__ == '__main__':
         cprint(f'[{i+1}/{n_items}] Downloading {url}...', 'green')
         # if check_url(url) is None:  # url is valid
         # Try downloading 3 times
-        if download_multi_thread(
-                url, max_workers=int(MAX_WORKERS), dl_dir=DL_DIR) is None:
+        if int(MAX_WORKERS) == 1:
+            result = download_single_thread(url, dl_dir=DL_DIR)
+        else:
+            result = download_multi_thread(
+                url, max_workers=int(MAX_WORKERS), dl_dir=DL_DIR)
+
+        if result is None:  # download was succesful
             # Convert to 16k-mono wav
             time.sleep(1)
             if extract_convert_to_wav(
@@ -131,9 +136,6 @@ if __name__ == '__main__':
         else:
             failed_urls.append(url)
             cprint(f'Failed to download {url} for 3 tries... pass...')
-        # else:
-        #     failed_urls.append(url)
-        #     cprint(f'Invalid url: {url}... pass...')
 
     print(f'Finished downloading {n_successful_download} files.')
     print(f'Failed to download {len(failed_urls)} files.')
