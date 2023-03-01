@@ -1,4 +1,5 @@
 import re
+import time
 import zipfile
 import os
 import shutil
@@ -117,6 +118,7 @@ if __name__ == '__main__':
             if download_multi_thread(
                     url, max_workers=int(MAX_WORKERS), dl_dir=DL_DIR) is None:
                 # Convert to 16k-mono wav
+                time.sleep(1)
                 if extract_convert_to_wav(
                         os.path.join(DL_DIR, get_filename_from_url(url)),
                         TARGET_SAMPLE_RATE):
