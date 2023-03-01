@@ -86,8 +86,8 @@ if __name__ == '__main__':
         f"Enter the download directory (default is './downloaded/'): "
     ) or './downloaded/'
     MAX_WORKERS = input(
-        f"Enter the number of max workers for multi-download (default is 1): "
-    ) or 1
+        f"Enter the number of max workers for multi-download (default is 8): "
+    ) or 8
     TARGET_SAMPLE_RATE = input(
         f"Enter the target sample rate (default is 16000): ") or 16000
     START_FROM_URL_INDEX = input(
