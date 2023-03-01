@@ -89,9 +89,10 @@ def download_multi_thread(url, max_workers=8, dl_dir='./downloaded/'):
             num_chunks = max(total_size // chunk_size, 1)
 
             # create a list of tuples representing the byte ranges for each chunk
-            byte_ranges = [(i * chunk_size,
-                            min((i + 1) * chunk_size - 1, total_size - 1))
-                           for i in range(num_chunks)]
+            byte_ranges = [(j * chunk_size,
+                            min((j + 1) * chunk_size - 1, total_size - 1))
+                           for j in range(num_chunks)]
+            byte_ranges[-1] = (byte_ranges[-1][0], total_size) # fix: last chunk to end of file..
 
             # use a ThreadPoolExecutor to download the chunks in parallel
             if not os.path.exists(file_name):
