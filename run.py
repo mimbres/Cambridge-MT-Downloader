@@ -113,27 +113,27 @@ if __name__ == '__main__':
     for i, url in enumerate(urls[START_FROM_URL_INDEX - 1:],
                             START_FROM_URL_INDEX - 1):
         cprint(f'[{i+1}/{n_items}] Downloading {url}...', 'green')
-        if check_url(url) is None:  # url is valid
-            # Try downloading 3 times
-            if download_multi_thread(
-                    url, max_workers=int(MAX_WORKERS), dl_dir=DL_DIR) is None:
-                # Convert to 16k-mono wav
-                time.sleep(1)
-                if extract_convert_to_wav(
-                        os.path.join(DL_DIR, get_filename_from_url(url)),
-                        TARGET_SAMPLE_RATE):
-                    n_successful_download += 1
-                    # Delete zip file
-                    os.remove(os.path.join(DL_DIR, get_filename_from_url(url)))
-                else:
-                    failed_zips.append(url)
-                    cprint(f'Failed to extract {url}...')
+        # if check_url(url) is None:  # url is valid
+        # Try downloading 3 times
+        if download_multi_thread(
+                url, max_workers=int(MAX_WORKERS), dl_dir=DL_DIR) is None:
+            # Convert to 16k-mono wav
+            time.sleep(1)
+            if extract_convert_to_wav(
+                    os.path.join(DL_DIR, get_filename_from_url(url)),
+                    TARGET_SAMPLE_RATE):
+                n_successful_download += 1
+                # Delete zip file
+                os.remove(os.path.join(DL_DIR, get_filename_from_url(url)))
             else:
-                failed_urls.append(url)
-                cprint(f'Failed to download {url} for 3 tries... pass...')
+                failed_zips.append(url)
+                cprint(f'Failed to extract {url}...')
         else:
             failed_urls.append(url)
-            cprint(f'Invalid url: {url}... pass...')
+            cprint(f'Failed to download {url} for 3 tries... pass...')
+        # else:
+        #     failed_urls.append(url)
+        #     cprint(f'Invalid url: {url}... pass...')
 
     print(f'Finished downloading {n_successful_download} files.')
     print(f'Failed to download {len(failed_urls)} files.')
