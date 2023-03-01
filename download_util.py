@@ -48,6 +48,21 @@ def check_url(url):
         return url
 
 
+def download_chunk(start_byte, end_byte, url, file_name):
+    headers = {'Range': f'bytes={start_byte}-{end_byte}'}
+    response = requests.get(url, headers=headers, stream=True)
+
+    # seek to the start byte position in the file
+    with open(file_name, 'rb+') as file:
+        file.seek(start_byte)
+        file.write(response.content)
+
+    # close the file
+    file.close()
+
+    return end_byte - start_byte + 1
+
+
 def download_multi_thread(url, max_workers=8, dl_dir='./downloaded/'):
     os.makedirs(dl_dir, exist_ok=True)
 
