@@ -25,8 +25,9 @@ This will launch a prompt that allows you to configure `output_dir`, `num_worker
 
 ## How it works
 ```css
-🚚  [Download] --> 📦 [Extract] --> 🎧 [Convert audio format]
+[PageSource]  🚚  [Download] --> 📦 [Extract] --> 🎧 [Convert audio format]
 ```
+
 **TODO**:
 - [ ] Instrument labeling: Cambridge-MT uses a simple file naming convention in the format of `ID_INSTRUMENT_MIC_ETC.*`.
 
