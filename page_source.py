@@ -1,5 +1,5 @@
 """
-This dict is from the page source of the website, 
+This list of dictionary is from the page source of the website, 
 view-source:https://multitracksearch.cambridge-mt.com/ms-mtk-search-ads.htm
 
 """

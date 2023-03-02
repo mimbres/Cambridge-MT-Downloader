@@ -5,7 +5,7 @@ import os
 import shutil
 import subprocess
 from page_source import page_source
-from download_util import download_multi_thread, download_smartdl, download_single_thread, check_url, get_filename_from_url, cprint
+from download_util import download_smartdl, download_single_thread, get_filename_from_url, cprint
 
 
 def remove_macos_hidden_files(target_dir):
@@ -110,11 +110,12 @@ if __name__ == '__main__':
     failed_urls = []
     failed_zips = []
 
+    # Download files from the URL list
     for i, url in enumerate(urls[START_FROM_URL_INDEX - 1:],
                             START_FROM_URL_INDEX - 1):
         cprint(f'[{i+1}/{n_items}] Downloading {url}...', 'green')
         # if check_url(url) is None:  # url is valid
-        # Try downloading 3 times
+        # Try downloading 5 times
         if int(MAX_WORKERS) == 1:
             result = download_single_thread(url, dl_dir=DL_DIR)
         else:
