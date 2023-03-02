@@ -5,7 +5,7 @@
 Auto-downloader and preprocessor for Cambridge-MT (multitrack) data
 
 ## About
-This repository provides a `Python` script that automatically downloads and resamples the [Cambridge-MT](https://www.cambridge-mt.com/ms/mtk/) dataset.  The Cambridge-MT dataset is a collection of over 500 studio-quality multi-track audio recordings of various music genres, including pop, rock, EDM, classical, and folk. The dataset follows the format of [MedleyDB](https://medleydb.weebly.com/), but is larger. It can be used for tasks such as music source separation, generation, transcription, and automatic mixing.
+This repository provides a `Python` script that automatically downloads and resamples the [Cambridge-MT](https://www.cambridge-mt.com/ms/mtk/) dataset.  The Cambridge-MT dataset is a collection of over 500 studio-quality multi-track audio recordings of various music genres, including pop, rock, EDM, classical, and folk. The dataset follows the format of [MedleyDB](https://medleydb.weebly.com/), but is larger. It can be used for tasks such as `music source separation`, `generation`, `transcription`, and `automatic mixing`.
 
 **Note**: 
 - This repository is an unofficial tool for accessing the [Cambridge-MT](https://www.cambridge-mt.com/ms/mtk/) dataset, and is not affiliated with or endorsed by the dataset creators.
@@ -16,7 +16,7 @@ This repository provides a `Python` script that automatically downloads and resa
 ```cli
 apt-get install sox && pip install -r requirements.txt # Linux
 ```
-On MacOS, use `brew` instead of `apt-get` installer.
+In MacOS, use `brew` instead of `apt-get` installer.
 
 ```
 python run.py
@@ -28,6 +28,6 @@ This will launch a prompt that allows you to configure `output_dir`, `num_worker
 🚚  [Download] --> 📦 [Extract] --> 🎧 [Convert audio format]
 ```
 **TODO**:
-- [ ] Instrument labeling: Cambridge-MT uses a simple file naming convention in the format ID_INSTRUMENT_MIC_.... The script can be modified to extract the instrument label from the file name
+- [ ] Instrument labeling: Cambridge-MT uses a simple file naming convention in the format of `ID_INSTRUMENT_MIC_ETC.*`.
 
 
